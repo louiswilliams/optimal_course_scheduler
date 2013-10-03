@@ -1,0 +1,23 @@
+require 'rubygems'
+require 'json'
+
+courseFile = File.new("courses.json","r")
+sectionFile = File.new("sections.json","r")
+
+rawCourses = ""
+rawSections = ""
+q
+qqq
+while(line = courseFile.gets)
+  rawCourses << line
+end
+
+while(line = sectionFile.gets)
+  rawSections << line
+end
+  
+courses = JSON.parse(rawCourses) 
+sections = JSON.parse(rawSections)
+
+ puts courses
+ puts sections
