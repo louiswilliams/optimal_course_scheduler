@@ -3,9 +3,9 @@ OptimalCourseScheduler::Application.routes.draw do
   get "main/index"
   get "main/about"
 
-  resource :course do
-    resource :section do
-      resource :meeting
+  resources :course do
+    resources :section do
+      resources :meeting
     end
   end
   # The priority is based upon order of creation: first created -> highest priority.
