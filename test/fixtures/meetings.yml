@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  section_id: 
+  location: MyString
+  start_time: 2013-10-03 16:46:38
+  end_time: 2013-10-03 16:46:38
+  monday: false
+  tuesday: false
+  wednesday: false
+  thursday: false
+  friday: false
+
+two:
+  section_id: 
+  location: MyString
+  start_time: 2013-10-03 16:46:38
+  end_time: 2013-10-03 16:46:38
+  monday: false
+  tuesday: false
+  wednesday: false
+  thursday: false
+  friday: false

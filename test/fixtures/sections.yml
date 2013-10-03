@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  section_id: MyString
+  course_id: 
+
+two:
+  section_id: MyString
+  course_id: 
