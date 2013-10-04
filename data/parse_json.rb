@@ -61,16 +61,19 @@ db = SQLite3::Database.open("devtest.sqlite3")
 
 # Add courses
 
-#courses.each do |course|
-#  db.execute("insert into courses (course_id,credits,college,title) values(?,?,?,?)",
-#    course["id"],course["credit"],course["college"],course["title"])
-#end
+puts "Adding courses"
+courses.each do |course|
+  db.execute("insert into courses (course_id,credits,college,title) values(?,?,?,?)",
+    course["id"],course["credit"],course["college"],course["title"])
+end
 
-#sections.each do |section|
-#  db.execute("insert into sections (section_id,course_id) values(?,?)",
-#    section["id"],db.execute("select id from courses where course_id=\'#{section["course_id"]}\'"))
-#end
+puts "Adding sections"
+sections.each do |section|
+  db.execute("insert into sections (section_id,course_id) values(?,?)",
+    section["id"],db.execute("select id from courses where course_id=\'#{section["course_id"]}\'"))
+end
 
+puts "Adding meetings"
 meetings.each do |meeting|
   id_course = db.execute("select id from courses where course_id=\'#{meeting["course_id"]}\' limit 1")[0][0]
   id_section = db.execute("select id from sections where course_id=\'#{id_course}\' limit 1")[0][0]
