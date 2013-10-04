@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131003204638) do
+ActiveRecord::Schema.define(version: 20131004035533) do
 
   create_table "courses", force: true do |t|
     t.string   "course_id"
@@ -34,8 +34,10 @@ ActiveRecord::Schema.define(version: 20131003204638) do
     t.boolean  "friday"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "course_id"
   end
 
+  add_index "meetings", ["course_id"], name: "index_meetings_on_course_id"
   add_index "meetings", ["section_id"], name: "index_meetings_on_section_id"
 
   create_table "sections", force: true do |t|

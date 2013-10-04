@@ -57,7 +57,7 @@ end
 ##
 
 # devtest.db is just a copy of my dev "db/development.sqlite3".
-db = SQLite3::Database.open("devtest.sqlite3")
+db = SQLite3::Database.open("/var/www/rails/optimal_course_scheduler/db/development.sqlite3")
 
 # Add courses
 
