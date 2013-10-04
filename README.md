@@ -1,6 +1,8 @@
 optimal_course_scheduler
 ========================
 
+Functioning development site: http://extrakt.us.to/
+
 A Ruby on Rails app to create an optimal schedule for a semester of courses.
 
 The "/data" folder contains scripts to add JSON files containing course and sections datato the development database.
