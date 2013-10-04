@@ -1,13 +1,20 @@
 require 'rubygems'
 require 'json'
+require 'sqlite3'
 
+##
+## This section of the code just parses the two JSON files to create
+## 3 hashmaps that will be added as tables later in the code
+##
+
+# Assuming these are your filenames
 courseFile = File.new("courses.json","r")
 sectionFile = File.new("sections.json","r")
 
+
 rawCourses = ""
 rawSections = ""
-q
-qqq
+
 while(line = courseFile.gets)
   rawCourses << line
 end
@@ -15,9 +22,81 @@ end
 while(line = sectionFile.gets)
   rawSections << line
 end
-  
+
+# Our three JSON arrays, one for each table that we're adding to
 courses = JSON.parse(rawCourses) 
 sections = JSON.parse(rawSections)
+meetings = []
 
- puts courses
- puts sections
+# Hashmap of days of week. Used to create a boolean column for each day of week
+# (Is this efficient?)
+weekdays = {"M" => "monday","T" => "tuesday","W" => "wednesday","R" => "thursday","F" => "friday"}
+
+# Gets the meetings for each section, then adds that to a meetings array
+sections.each do |section|
+  sectionMeetings = section["meetings"]
+  sectionMeetings.each do |meeting|
+    # If a day of week is found in meeting "days" array, then set the coulmn
+    # value to true, otherwise, false.
+    weekdays.each do |key,value|
+      meeting["#{value}"] = (meeting["days"].index(key)) ? "true" : "false"
+    end
+    # Adds the section's id to the array
+    meeting["section_id"] = section["id"]
+    meeting["course_id"] = section["course_id"]
+    meetings << meeting
+  end
+end
+
+# puts courses
+# puts sections
+# puts meetings
+
+##
+## This section of the code imports the three created hashmaps as tables
+##
+
+# devtest.db is just a copy of my dev "db/development.sqlite3".
+db = SQLite3::Database.open("devtest.sqlite3")
+
+# Add courses
+
+# courses.each do |course|
+#  db.execute("insert into courses (course_id,credits,college,title) values(?,?,?,?)",
+#    course["id"],course["credit"],course["college"],course["title"])
+# end
+
+# sections.each do |section|
+#   db.execute("insert into sections (section_id,course_id) values(?,?)",
+#     section["id"],db.execute("select id from courses where course_id=\'#{section["course_id"]}\'"))
+# end
+
+meetings.each do |meeting|
+  db.prepare("insert into meetings (section_id,location,start_time,end_time," +
+  "monday,tuesday,wednesday,thursday,friday) values(:section_id,:location,:start_time," +
+  ":end_time,:monday,:tuesday,:wednsday,:thursday,:friday)") do |smt|
+    smt.bind_param("section_id", db.execute("select id from sections " +
+      "where section_id=\'#{meeting["section_id"]}\'" +
+      "and course_id"))
+    smt.bind_param("location",meeting["location"])
+    smt.bind_param("start_time",Time.parse(meeting["start_time"]).strftime("%H:%M:%S"))
+    smt.bind_param("end_time",Time.parse(meeting["end_time"]).strftime("%H:%M:%S"))
+    smt.bind_param("monday",meeting["monday"])
+    smt.bind_param("tuesday",meeting["tuesday"])
+    smt.bind_param("wednesday", meeting["wednesday"])
+    smt.bind_param("thursday", meeting["thursday"])
+    smt.bind_param("friday", meeting["friday"])
+  end
+#  puts (meeting["monday"]) ? "Monday" : "Not monday"
+end
+
+#      t.references :section, index: true
+#      t.string :location
+#      t.time :start_time
+#      t.time :end_time
+#      t.boolean :monday
+#      t.boolean :tuesday
+#      t.boolean :wednesday
+#      t.boolean :thursday
+#      t.boolean :friday
+
