@@ -1,7 +1,7 @@
 optimal_course_scheduler
 ========================
 
-Functioning development site: http://extrakt.us.to/
+Functioning development site: http://course.us.to/
 
 A Ruby on Rails app to create an optimal schedule for a semester of courses.
 
