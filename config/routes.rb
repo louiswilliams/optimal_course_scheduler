@@ -1,5 +1,5 @@
 OptimalCourseScheduler::Application.routes.draw do
-  get "course/view"
+  get "courses" => "course#index"
   get "main/index"
   get "main/about"
 
