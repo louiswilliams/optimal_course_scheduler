@@ -1,5 +1,19 @@
-<h1><%= "#{@course.college} #{@course.course_id}" %></h1>
-<h3><%= "#{@course.title}: #{@course.credits} Credit hours" %></h3>
+<h4><%= link_to "Back to course list", courses_path %>
+<div class="row">
+  <div class="span">
+    <h1><%= link_to "#{@course.college} #{@course.course_id}",course_path(@course.id) %></h1>
+  </div>
+  <div class="span" style="padding-top: 10px;"><p>
+    <strong><%= @course.title %></strong><br>
+    <span class="text-success"><%= @course.credits %> Credit hours</span>
+  </p>
+  </div>
+</div>
+<h3><%= (@sections.empty?) ? "No sections found." : "Sections: "%></h3>
 <% @sections.each do |section| %>
-  <h2><%= link_to "#{section.section_id}",course_section_path(@course.id,section.id) %></h2>
+  <% @section = section %>
+
+  <div class="well span5"> 
+    <%= render "section/show", object: @section %>
+  </div>
 <% end %>

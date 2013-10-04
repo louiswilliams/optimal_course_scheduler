@@ -1,0 +1,9 @@
+<p>
+<%= "#{@course.college} #{@course.course_id}" %>
+<h2>Section <%= @section.section_id %></h2>
+</p>
+<h1><%= @course.title %>
+<% @meetings.each do |meeting| %>
+  <% @meeting = meeting %>
+  <%= render partial: "meeting/show", object: @meeting %>
+<% end %>

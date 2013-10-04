@@ -1,0 +1,13 @@
+<div class="row" style="padding-top: 8px;">
+  <div class="span"><h4>
+    <%= @meeting.location %>
+  </h4></div>
+</div>
+<div class="row">
+  <div class="span"><p>
+    <%= @meeting.days_to_str%><br>
+    <%= @meeting.start_time.strftime "%l:%M %P"%> - 
+    <%= @meeting.end_time.strftime "%l:%M %P"%>
+  </p></div>
+
+</div>

@@ -1,4 +1,17 @@
+<h1>Course Listing</h1>
 <% @courses.each do |course| %>
-  <h1><%= link_to "#{course.college} #{course.course_id}",course_path(course.id) %></h1>
-  <h3><%= "#{course.title}: #{course.credits} Credit hours" %></h3>
+  <% sections = Section.where("course_id = ?",course.id) %>
+<div class="well span4">
+  <div class="row">
+    <div class="span">
+      <h3><%= link_to "#{course.college} #{course.course_id}",course_path(course.id) %></h3>
+    </div>
+    <div class="span" style="padding-top: 15px;"><p>
+      <strong><%= course.title %></strong><br>
+      <span class="text-success"><%= course.credits %> Credit hours</span><br>
+      <span class="text-info"><strong><%= sections.count %> Sections</strong></span>
+    </p>
+    </div>
+  </div>
+</div>
 <% end %>
