@@ -1,7 +1,7 @@
-<h4><%= link_to "Back to course list", courses_path %>
+<h5><%= link_to "Back to course list", courses_path %></h5>
 <div class="row">
   <div class="span">
-    <h1><%= link_to "#{@course.college} #{@course.course_id}",course_path(@course.id) %></h1>
+    <h1><%= link_to "#{@course.college} #{@course.name}",course_path(@course.id) %></h1>
   </div>
   <div class="span" style="padding-top: 10px;"><p>
     <strong><%= @course.title %></strong><br>
@@ -14,6 +14,6 @@
   <% @section = section %>
 
   <div class="well span5"> 
-    <%= render "section/show", object: @section %>
+    <%= render partial: "section/show", object: @section %>
   </div>
 <% end %>

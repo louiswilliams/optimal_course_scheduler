@@ -11,10 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131004035533) do
+ActiveRecord::Schema.define(version: 20131010024237) do
 
   create_table "courses", force: true do |t|
-    t.string   "course_id"
+    t.string   "name"
     t.string   "college"
     t.decimal  "credits"
     t.string   "title"
@@ -40,13 +40,55 @@ ActiveRecord::Schema.define(version: 20131004035533) do
   add_index "meetings", ["course_id"], name: "index_meetings_on_course_id"
   add_index "meetings", ["section_id"], name: "index_meetings_on_section_id"
 
+  create_table "schedule_courses", force: true do |t|
+    t.integer  "schedule_id"
+    t.integer  "course_id"
+    t.integer  "section_id"
+    t.boolean  "scheduled"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "schedule_courses", ["course_id"], name: "index_schedule_courses_on_course_id"
+  add_index "schedule_courses", ["schedule_id"], name: "index_schedule_courses_on_schedule_id"
+  add_index "schedule_courses", ["section_id"], name: "index_schedule_courses_on_section_id"
+
+  create_table "schedules", force: true do |t|
+    t.string   "name"
+    t.integer  "user_id"
+    t.integer  "year"
+    t.integer  "semester"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "schedules", ["user_id"], name: "index_schedules_on_user_id"
+
   create_table "sections", force: true do |t|
-    t.string   "section_id"
+    t.string   "name"
     t.integer  "course_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   add_index "sections", ["course_id"], name: "index_sections_on_course_id"
+
+  create_table "users", force: true do |t|
+    t.string   "email",                  default: "", null: false
+    t.string   "encrypted_password",     default: "", null: false
+    t.string   "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer  "sign_in_count",          default: 0
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string   "current_sign_in_ip"
+    t.string   "last_sign_in_ip"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "users", ["email"], name: "index_users_on_email", unique: true
+  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
 
 end

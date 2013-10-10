@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  schedule_id: 
+  course_id: 
+  section_id: 
+  scheduled: false
+
+two:
+  schedule_id: 
+  course_id: 
+  section_id: 
+  scheduled: false

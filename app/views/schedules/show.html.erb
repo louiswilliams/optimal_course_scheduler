@@ -1,0 +1,30 @@
+<p id="notice"><%= notice %></p>
+
+<div class="row">
+  <div class="span4">
+    <h2 style="display: inline"><%= @schedule.name %></h2>
+  </div>
+  <div class="span" style="margin-top: 3px;">
+    <%= link_to 'Edit', edit_schedule_path(@schedule), class: "btn btn-primary" %>
+    <%= link_to 'Back', schedules_path, class: "btn btn-default"%>
+  </div>
+</div>
+
+<div class="row">
+  <div class="span"><h4>Courses to Schedule:</h4></div>
+</div>
+<% if @schedule_courses.empty? %>
+  <p>No courses added yet...</p>
+<% end %>
+<% @schedule_courses.each do |schdule_course| %>
+
+<% end %>
+<div class="row">
+  <div class="span">
+    <%= link_to "Add Course",new_schedule_schedule_course_path(@schedule), class: "btn btn-success" %>
+  </div>
+</div>
+<div class="row" style="margin-top: 20px;">
+  <div class="span">
+  </div>
+</div>

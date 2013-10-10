@@ -42,8 +42,8 @@ sections.each do |section|
       meeting["#{value}"] = (meeting["days"].index(key)) ? "true" : "false"
     end
     # Adds the section's id to the array
-    meeting["section_id"] = section["id"]
-    meeting["course_id"] = section["course_id"]
+    meeting["section_name"] = section["id"]
+    meeting["course_name"] = section["course_id"]
     meetings << meeting
   end
 end
@@ -61,26 +61,27 @@ db = SQLite3::Database.open("/var/www/rails/optimal_course_scheduler/db/developm
 
 # Add courses
 
-#puts "Adding courses"
-#courses.each do |course|
-#  db.execute("insert into courses (course_id,credits,college,title) values(?,?,?,?)",
-#    course["id"],course["credit"],course["college"],course["title"])
-#end
+puts "Adding courses"
+courses.each do |course|
+  db.execute("insert into courses (name,credits,college,title) values(?,?,?,?)",
+    course["id"],course["credit"],course["college"],course["title"])
+  puts course
+end
 
-#puts "Adding sections"
-#sections.each do |section|
-#  db.execute("insert into sections (section_id,course_id) values(?,?)",
-#    section["id"],db.execute("select id from courses where course_id=\'#{section["course_id"]}\'"))
-#end
+puts "Adding sections"
+sections.each do |section|
+  db.execute("insert into sections (name,course_id) values(?,?)",
+    section["id"],db.execute("select id from courses where name=\'#{section["course_id"]}\'"))
+  puts section
+end
 
 puts "Adding meetings"
 meetings.each do |meeting|
-  id_course = db.execute("select id from courses where course_id=\'#{meeting["course_id"]}\' limit 1")[0][0]
+  id_course = db.execute("select id from courses where name=\'#{meeting["course_name"]}\' limit 1")[0][0]
   id_section = db.execute("select id from sections where course_id=\'#{id_course}\'" +
-    " and section_id=\'#{meeting["section_id"]}\' limit 1")[0][0]
-#  puts "#{meeting["course_id"]}: #{meeting["section_id"]}, #{id_course}: #{id_section}"
+    " and name=\'#{meeting["section_name"]}\' limit 1")[0][0]
   db.execute("insert into meetings (section_id,course_id,location,start_time,end_time," +
-  "monday,tuesday,wednesday,thursday,friday) values(?,?,?,?,?,?,?,?,?,?)",
+      "monday,tuesday,wednesday,thursday,friday) values(?,?,?,?,?,?,?,?,?,?)",
     id_section,
     id_course,
     meeting["location"],
@@ -91,4 +92,5 @@ meetings.each do |meeting|
     meeting["wednesday"],
     meeting["thursday"],
     meeting["friday"])
+  puts meeting
 end

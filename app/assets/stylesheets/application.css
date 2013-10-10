@@ -10,3 +10,11 @@
  *= require_tree .
  */
 
+.navbar-login{
+  float: right;
+  margin: 5px 0px 0px 0px;
+}
+
+.navbar-login .btn{
+  margin: 0px !important;
+}

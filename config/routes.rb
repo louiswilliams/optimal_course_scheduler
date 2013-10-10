@@ -1,4 +1,17 @@
 OptimalCourseScheduler::Application.routes.draw do
+
+  get "schedule_course/show"
+  get "schedule_course/new"
+  get "schedule_course/create"
+  get "schedule_course/edit"
+  get "schedule_course/update"
+  get "schedule_course/destroy"
+
+  resources :schedules do 
+    resources :schedule_course
+  end
+
+  devise_for :users
   get "meeting/show"
   get "section/show"
   get "courses" => "course#index"
