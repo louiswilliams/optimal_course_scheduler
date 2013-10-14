@@ -1,0 +1,22 @@
+<%= form_for @schedule_course, url: schedule_schedule_course_pat do |f| %>
+  <% if @schedule_course.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@schedule_course.errors.count, "error") %> prohibited this schedule from being saved:</h2>
+
+      <ul>
+      <% @schedule_course.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label "Name" %><br>
+    <%= select_tag "course", options_from_collection_for_select(@courses, "id", "college") %>
+  </div>
+  <div class="actions">
+    <%= f.submit class: "btn btn-success" %>
+  </div>
+<% end %>
+

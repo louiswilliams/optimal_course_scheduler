@@ -12,6 +12,12 @@
       <span class="text-info"><%= sections.count %> Sections</span>
     </p>
     </div>
+    <div class="span">
+      <%= form_tag @add_course_path do %>
+        <%= hidden_field_tag :id, course.id %>
+        <%= submit_tag "Add course", :class => "btn btn-success" %>
+      <% end %>
+    </div>
   </div>
 </div>
 <% end %>

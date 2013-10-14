@@ -13,15 +13,15 @@
 
   <div class="field">
     <%= f.label "College" %><br>
-    <%= select_tag "college", options_from_collection_for_select(@courses.colleges, "first", "last", "CS")%>
+    <%= select_tag "course", options_from_collection_for_select(@courses.colleges, "first", "last") %>
   </div>
   <div class="field">
-    <%= f.label "ID" %><br>
-    <%= select_tag "id", options_for_select(Course.where("college = 'CS'").collect{|c| ["#{c.name}: #{c.title}", c.id]}) %>
+    <%= f.label "Course ID" %><br>
+    <%= select_tag "
   </div>
   <div id="courses_result"></div>
   <div class="actions">
-    <%= f.submit "Add Course to Schedule", :class => "btn btn-success" %>
+    <%= f.submit class: "btn btn-success" %>
   </div>
 <% end %>
 

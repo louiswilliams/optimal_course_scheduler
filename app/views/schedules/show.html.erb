@@ -11,13 +11,20 @@
 </div>
 
 <div class="row">
-  <div class="span"><h4>Courses to Schedule:</h4></div>
+  <div class="span"><h5>Courses to Schedule:</h5></div>
 </div>
 <% if @schedule_courses.empty? %>
   <p>No courses added yet...</p>
 <% end %>
-<% @schedule_courses.each do |schdule_course| %>
-
+<% @schedule_courses.each do |schedule_course| %>
+  <div class="row">
+    <div class="span"><h4><%= schedule_course.course.name %>:
+      <%= schedule_course.course.title %></h4>
+    </div>
+    <div class="span" style="margin-top: 7px">
+      <%= button_to "Remove", schedule_schedule_course_path( params[ :id], schedule_course.id ), :method => :delete, :class => "btn btn-danger" %>
+    </div>
+  </div>
 <% end %>
 <div class="row">
   <div class="span">
