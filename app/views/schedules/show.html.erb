@@ -2,23 +2,33 @@
 
 <div class="row">
   <div class="span4">
-    <h2 style="display: inline"><%= @schedule.name %></h2>
+    <h1 style="display: inline"><%= @schedule.name %></h1>
   </div>
   <div class="span" style="margin-top: 3px;">
     <%= link_to 'Edit', edit_schedule_path(@schedule), class: "btn btn-primary" %>
     <%= link_to 'Back', schedules_path, class: "btn btn-default"%>
   </div>
 </div>
-
 <div class="row">
-  <div class="span"><h5>Courses to Schedule:</h5></div>
+  <div class="span">
+    <h4 class="text-success">
+      <%= @schedule_courses.inject(0) { |credits,c| c.course.credits + credits }%>
+      Credit hours
+    </h4>
+  </div>
+</div>
+<div class="row">
+  <div class="span">
+    <h3>Courses:</h3>
+  </div>
 </div>
 <% if @schedule_courses.empty? %>
   <p>No courses added yet...</p>
 <% end %>
 <% @schedule_courses.each do |schedule_course| %>
   <div class="row">
-    <div class="span"><h4><%= schedule_course.course.name %>:
+    <div class="span4"><h4>
+      <%= link_to "#{schedule_course.course.college} #{schedule_course.course.name}", course_path(schedule_course.course) %>:
       <%= schedule_course.course.title %></h4>
     </div>
     <div class="span" style="margin-top: 7px">
@@ -28,10 +38,30 @@
 <% end %>
 <div class="row">
   <div class="span">
-    <%= link_to "Add Course",new_schedule_schedule_course_path(@schedule), class: "btn btn-success" %>
+    <%= link_to "Add Course",course_index_path, class: "btn btn-success" %>
   </div>
 </div>
-<div class="row" style="margin-top: 20px;">
+<div class="row" style="margin-top: 15px">
   <div class="span">
+    <h3>Constraints:</h3>
   </div>
 </div>
+<% if @time_constraints.empty? %>
+  <p>No contraints yet...</p>
+<% end %>
+<% @time_constraints.each do |constraint| %>
+  <div class="row">
+    <div class="span4"><h4>
+      <%= link_to "#{constraint.id}", time_constraint_path(constraint) %>:
+    </h4></div>
+    <div class="span" style="margin-top: 7px">
+      <%= button_to "Remove", schedule_time_constraint_path(@schedule.id, constraint), :method => :delete, :class => "btn btn-danger" %>
+    </div>
+  </div>
+<% end %>
+<div class="row">
+  <div class="span">
+    <%= link_to "Create Time Constraint",new_schedule_time_constraint_path(@schedule.id), class: "btn btn-success" %>
+  </div>
+</div>
+<div style="margin-bottom: 30px"></div>

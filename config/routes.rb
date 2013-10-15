@@ -1,8 +1,8 @@
 OptimalCourseScheduler::Application.routes.draw do
 
-
   resources :schedules do 
     resources :schedule_course
+    resources :time_constraint
   end
 
   devise_for :users
@@ -12,6 +12,7 @@ OptimalCourseScheduler::Application.routes.draw do
   get "main/index"
   get "main/about"
 
+  get "course/college/:college" => "course#college"
   resources :course do
     resources :section do
       resources :meeting

@@ -11,7 +11,6 @@ require 'sqlite3'
 courseFile = File.new("courses.json","r")
 sectionFile = File.new("sections.json","r")
 
-
 rawCourses = ""
 rawSections = ""
 
@@ -32,26 +31,6 @@ meetings = []
 # (Is this efficient?)
 weekdays = {"M" => "monday","T" => "tuesday","W" => "wednesday","R" => "thursday","F" => "friday"}
 
-# Gets the meetings for each section, then adds that to a meetings array
-sections.each do |section|
-  sectionMeetings = section["meetings"]
-  sectionMeetings.each do |meeting|
-    # If a day of week is found in meeting "days" array, then set the coulmn
-    # value to true, otherwise, false.
-    weekdays.each do |key,value|
-      meeting["#{value}"] = (meeting["days"].index(key)) ? "true" : "false"
-    end
-    # Adds the section's id to the array
-    meeting["section_name"] = section["id"]
-    meeting["course_name"] = section["course_id"]
-    meetings << meeting
-  end
-end
-
-# puts courses
-# puts sections
-# puts meetings
-
 ##
 ## This section of the code imports the three created hashmaps as tables
 ##
@@ -60,37 +39,46 @@ end
 db = SQLite3::Database.open("/var/www/rails/optimal_course_scheduler/db/development.sqlite3")
 
 # Add courses
-
-puts "Adding courses"
-courses.each do |course|
-  db.execute("insert into courses (name,credits,college,title) values(?,?,?,?)",
-    course["id"],course["credit"],course["college"],course["title"])
-  puts course
-end
+#puts "Adding courses"
+#courses.each do |course|
+#  db.execute("insert into courses (name,credits,college,title) values(?,?,?,?)",
+#    course["id"],course["credit"],course["college"],course["title"])
+#  puts course
+#end
 
 puts "Adding sections"
 sections.each do |section|
-  db.execute("insert into sections (name,course_id) values(?,?)",
-    section["id"],db.execute("select id from courses where name=\'#{section["course_id"]}\'"))
-  puts section
-end
+  course_id = db.execute("select id from courses where name=? AND college=?",
+    section["course_id"],
+    section["college"])[0][0]
+  db.execute("insert into sections (name,course_id) values(?,?)",section["id"],course_id)
+  puts section["college"] + " " + section["course_id"] + " - " + section["id"] + ". COURSE.id: #{course_id}" 
 
-puts "Adding meetings"
-meetings.each do |meeting|
-  id_course = db.execute("select id from courses where name=\'#{meeting["course_name"]}\' limit 1")[0][0]
-  id_section = db.execute("select id from sections where course_id=\'#{id_course}\'" +
-    " and name=\'#{meeting["section_name"]}\' limit 1")[0][0]
-  db.execute("insert into meetings (section_id,course_id,location,start_time,end_time," +
-      "monday,tuesday,wednesday,thursday,friday) values(?,?,?,?,?,?,?,?,?,?)",
-    id_section,
-    id_course,
-    meeting["location"],
-    Time.parse(meeting["start_time"]).strftime("%H:%M:%S"),
-    Time.parse(meeting["end_time"]).strftime("%H:%M:%S"),
-    meeting["monday"],
-    meeting["tuesday"],
-    meeting["wednesday"],
-    meeting["thursday"],
-    meeting["friday"])
-  puts meeting
+  puts "---Meetings---"
+  # Now for the section's meetings
+  section["meetings"].each do |meeting|
+    # If a day of week is found in meeting "days" array, then set the coulmn
+    # value to true, otherwise, false.
+    weekdays.each do |key,value|
+      meeting["#{value}"] = (meeting["days"].index(key)) ? "true" : "false"
+    end
+
+    # Get last inserted row in sections (The section id for meetings to reference)
+    section_id = db.execute("Select id from sections Order By id Desc Limit 1")[0]
+   
+    db.execute("insert into meetings (section_id,course_id,location,start_time,end_time," +
+        "monday,tuesday,wednesday,thursday,friday) values(?,?,?,?,?,?,?,?,?,?)",
+      section_id,
+      course_id,
+      meeting["location"],
+      Time.parse(meeting["start_time"]).strftime("%H:%M:%S"),
+      Time.parse(meeting["end_time"]).strftime("%H:%M:%S"),
+      meeting["monday"],
+      meeting["tuesday"],
+      meeting["wednesday"],
+      meeting["thursday"],
+      meeting["friday"])
+    puts meeting["location"]
+  end
+
 end

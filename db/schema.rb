@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131010024237) do
+ActiveRecord::Schema.define(version: 20131015163343) do
 
   create_table "courses", force: true do |t|
     t.string   "name"
@@ -72,6 +72,21 @@ ActiveRecord::Schema.define(version: 20131010024237) do
   end
 
   add_index "sections", ["course_id"], name: "index_sections_on_course_id"
+
+  create_table "time_constraints", force: true do |t|
+    t.integer  "schedule_id"
+    t.boolean  "monday"
+    t.boolean  "tuesday"
+    t.boolean  "wednesday"
+    t.boolean  "thursday"
+    t.boolean  "friday"
+    t.time     "start_time"
+    t.time     "end_time"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "time_constraints", ["schedule_id"], name: "index_time_constraints_on_schedule_id"
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false

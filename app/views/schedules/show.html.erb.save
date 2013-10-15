@@ -1,0 +1,41 @@
+<p id="notice"><%= notice %></p>
+
+<div class="row">
+  <div class="span4">
+    <h2 style="display: inline"><%= @schedule.name %></h2>
+  </div>
+  <div class="span" style="margin-top: 3px;">
+    <%= link_to 'Edit', edit_schedule_path(@schedule), class: "btn btn-primary" %>
+    <%= link_to 'Back', schedules_path, class: "btn btn-default"%>
+  </div>
+</div>
+<div class="row">
+  <div class="span">
+    <% @schedule_courses.inject { |credits,s| sc.course.credits + credits }%></p>
+    <h4 class="text-success">
+      <%= credits %> Credit hours
+    </h4>
+  </div>
+</div>
+<% if @schedule_courses.empty? %>
+  <p>No courses added yet...</p>
+<% end %>
+<% @schedule_courses.each do |schedule_course| %>
+  <div class="row">
+    <div class="span4"><h4><%= schedule_course.course.name %>:
+      <%= schedule_course.course.title %></h4>
+    </div>
+    <div class="span" style="margin-top: 7px">
+      <%= button_to "Remove", schedule_schedule_course_path( params[ :id], schedule_course.id ), :method => :delete, :class => "btn btn-danger" %>
+    </div>
+  </div>
+<% end %>
+<div class="row">
+  <div class="span">
+    <%= link_to "Add Course",course_index_path, class: "btn btn-success" %>
+  </div>
+</div>
+<div class="row" style="margin-top: 20px;">
+  <div class="span">
+  </div>
+</div>

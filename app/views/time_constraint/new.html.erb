@@ -1,0 +1,16 @@
+<h1>New Time Constraint</h1>
+<%= form_for @constraint, :url => schedule_time_constraint_index_path(params[:schedule_id]) do |f| %>
+<h4>Days of the week</h4>
+<table><tbody>
+  <tr>
+   <th>M</th><th>T</th><th>W</th><th>R</th><th>F</th> 
+  </tr>
+  <tr>
+    <td><%= f.check_box :monday %></td>
+    <td><%= f.check_box :tuesday %></td>
+    <td><%= f.check_box :wednesday %></td>
+    <td><%= f.check_box :thursday %></td>
+    <td><%= f.check_box :friday %></td>
+  </tr>
+</tbody></table>
+<% end %>

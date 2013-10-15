@@ -1,23 +1,12 @@
-<h1>Course Listing</h1>
-<% @courses.each do |course| %>
-  <% sections = Section.where("course_id = ?",course.id) %>
-<div class="well span4">
-  <div class="row">
-    <div class="span">
-      <h3><%= link_to "#{course.college} #{course.name}",course_path(course.id) %></h3>
-    </div>
-    <div class="span" style="padding-top: 15px;"><p>
-      <strong><%= course.title %></strong><br>
-      <span class="text-success"><%= course.credits %> Credit hours</span><br>
-      <span class="text-info"><%= sections.count %> Sections</span>
-    </p>
-    </div>
-    <div class="span">
-      <%= form_tag @add_course_path do %>
-        <%= hidden_field_tag :id, course.id %>
-        <%= submit_tag "Add course", :class => "btn btn-success" %>
-      <% end %>
-    </div>
+<h1>Colleges</h1>
+<% @colleges.each do |college| %>
+  <% courses = Section.where("college = ?",college[0]) %>
+<div class="row">
+  <div class="span1">
+    <h3><%= link_to college[0],"/course/college/#{college[0]}" %></h3>
+  </div>
+  <div class="span" style="margin-top: 12px">
+    <h4><%= college[1] %></h4>
   </div>
 </div>
 <% end %>

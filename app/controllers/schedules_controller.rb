@@ -12,6 +12,7 @@ class SchedulesController < ApplicationController
   # GET /schedules/1.json
   def show
     @schedule_courses = ScheduleCourse.where("schedule_id = ?",@schedule.id)
+    @time_constraints = TimeConstraint.where("schedule_id = ?",@schedule.id)
   end
 
   # GET /schedules/new

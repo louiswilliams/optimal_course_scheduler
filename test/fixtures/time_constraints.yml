@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  schedule_id: 
+  monday: false
+  tuesday: false
+  wednesday: false
+  thursday: false
+  friday: false
+  start_time: 2013-10-15 12:33:43
+  end_time: 2013-10-15 12:33:43
+
+two:
+  schedule_id: 
+  monday: false
+  tuesday: false
+  wednesday: false
+  thursday: false
+  friday: false
+  start_time: 2013-10-15 12:33:43
+  end_time: 2013-10-15 12:33:43
