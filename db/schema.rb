@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131015163343) do
+ActiveRecord::Schema.define(version: 20131015202137) do
 
   create_table "courses", force: true do |t|
     t.string   "name"
@@ -80,10 +80,11 @@ ActiveRecord::Schema.define(version: 20131015163343) do
     t.boolean  "wednesday"
     t.boolean  "thursday"
     t.boolean  "friday"
-    t.time     "start_time"
-    t.time     "end_time"
+    t.time     "start_time",  default: '2000-01-01 08:00:00'
+    t.time     "end_time",    default: '2000-01-01 09:00:00'
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "name",        default: "Sleep"
   end
 
   add_index "time_constraints", ["schedule_id"], name: "index_time_constraints_on_schedule_id"

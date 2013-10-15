@@ -32,7 +32,7 @@
       <%= schedule_course.course.title %></h4>
     </div>
     <div class="span" style="margin-top: 7px">
-      <%= button_to "Remove", schedule_schedule_course_path( params[ :id], schedule_course.id ), :method => :delete, :class => "btn btn-danger" %>
+      <%= button_to "Drop", schedule_schedule_course_path( params[ :id], schedule_course.id ), :method => :delete, :class => "btn btn-danger" %>
     </div>
   </div>
 <% end %>
@@ -52,7 +52,7 @@
 <% @time_constraints.each do |constraint| %>
   <div class="row">
     <div class="span4"><h4>
-      <%= link_to "#{constraint.id}", time_constraint_path(constraint) %>:
+      <%= link_to "#{constraint.name}", schedule_time_constraint_path(@schedule.id,constraint) %>:
     </h4></div>
     <div class="span" style="margin-top: 7px">
       <%= button_to "Remove", schedule_time_constraint_path(@schedule.id, constraint), :method => :delete, :class => "btn btn-danger" %>
