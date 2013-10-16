@@ -4,4 +4,8 @@ class MainController < ApplicationController
 
   def about
   end
+
+  def test
+  	render :layout => false
+  end
 end

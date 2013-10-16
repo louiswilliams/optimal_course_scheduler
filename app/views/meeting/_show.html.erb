@@ -1,5 +1,5 @@
 <div class="row" style="padding-top: 8px;">
-  <div class="span"><h4>
+  <div class="col-md-8"><h4>
     <%= @meeting.days_to_str%>: 
     <%= @meeting.start_time.strftime "%l:%M %P"%> - 
     <%= @meeting.end_time.strftime "%l:%M %P"%><br>
@@ -7,7 +7,7 @@
   </h4></div>
 </div>
 <div class="row">
-  <div class="span"><p>
+  <div class="col-md-8"><p>
     <%= @meeting.location %>
   </p></div>
 

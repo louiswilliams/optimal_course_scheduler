@@ -1,4 +1,5 @@
 class TimeConstraintController < ApplicationController
+  before_action :set_constraint, only: [:show, :edit, :update, :destroy]
   def show
   end
 
@@ -17,9 +18,13 @@ class TimeConstraintController < ApplicationController
   end
 
   def update
+    @constraint.update(time_constraint_params)
+    redirect_to schedule_path(params[:schedule_id])
   end
 
   def destroy
+    @constraint.destroy
+    redirect_to schedule_path(params[:schedule_id])
   end
 
   private

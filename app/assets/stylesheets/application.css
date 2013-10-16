@@ -18,3 +18,7 @@
 .navbar-login .btn{
   margin: 0px !important;
 }
+
+body{
+	margin-top: 60px !important;
+}

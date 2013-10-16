@@ -11,6 +11,7 @@ OptimalCourseScheduler::Application.routes.draw do
   get "courses" => "course#index"
   get "main/index"
   get "main/about"
+  get "main/test"
 
   get "course/college/:college" => "course#college"
   resources :course do

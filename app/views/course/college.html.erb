@@ -5,12 +5,12 @@
 <% end %>
 <% @courses.each do |course| %>
   <% sections = Section.where("course_id = ?",course.id) %>
-<div class="well span4">
+<div class="well col-md-9">
   <div class="row">
-    <div class="span">
+    <div class="col-md-3">
       <h3><%= link_to "#{course.college} #{course.name}",course_path(course.id) %></h3>
     </div>
-    <div class="span" style="padding-top: 15px;"><p>
+    <div class="col-md-5" style="padding-top: 15px;"><p>
       <strong><%= course.title %></strong><br>
       <span class="text-success"><%= course.credits %> Credit hours</span><br>
       <span class="text-info"><%= sections.count %> Sections</span>
@@ -18,7 +18,7 @@
     </div>
   </div>
   <div class="row">
-    <div class="span">
+    <div class="col-md-1">
       <%= form_tag @add_course_path do %>
         <%= hidden_field_tag :id, course.id %>
         <%= submit_tag "Add course", :class => "btn btn-success" %>

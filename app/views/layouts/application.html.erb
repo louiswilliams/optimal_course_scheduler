@@ -38,53 +38,59 @@
   </head>
   <body>
 
-    <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <a class="btn btn-navbar" data-target=".nav-collapse" data-toggle="collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </a>
-          <a class="brand" href="/">Optimal Course Scheduler</a>
-          <div class="container nav-collapse">
-            <ul class="nav">
-              <li <%= 'class=active' if params[:controller]=="course" %> ><%= link_to "Courses", courses_path %></li>
-              <li <%= 'class=active' if params[:controller]=="schedules" %> ><%= link_to "Schedules", schedules_path %></li>
-              <% if !user_signed_in? %>
-                <li <%= 'class=active' if current_page?(new_user_session_path) %> ><%= link_to "Sign In", new_user_session_path  %></li>
-                <li <%= 'class=active' if current_page?(new_user_registration_path) %> ><%= link_to "Sign Up", new_user_registration_path  %></li>
-              <% else %>
-                <li><%= link_to "Sign Out", destroy_user_session_path, :method => "DELETE"  %></li>
-              <% end %>
-            </ul>
-            <% if !user_signed_in? %>
-              <%= form_for :user, :method => "post", :url => user_session_path, :html => { :class => "form-inline navbar-login" }  do |f| %>
-                <%= f.email_field :email, :autofocus => true, :placeholder => "Email", :class => "input-medium" %>
-                <%= f.password_field :password, :placeholder => "Password", :class => "input-medium" %>
-
-                <%= f.submit "Sign in", :class => "btn" %>
-              <% end %>
-            <% end %>
-          </div><!--/.nav-collapse -->
-        </div>
+    <nav class="navbar navbar-fixed-top navbar-default" role="navigation">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-target=".navbar-ex1-collapse" data-toggle="collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
       </div>
-    </div>
+      <a class="navbar-brand" href="/">Optimal Course Scheduler</a>
+      <div class="collapse navbar-collapse navbar-ex1-collapse">
+        <ul class="nav navbar-nav">
+          <li <%= 'class=active' if params[:controller]=="course" %> ><%= link_to "Courses", courses_path %></li>
+          <li <%= 'class=active' if params[:controller]=="schedules" %> ><%= link_to "Schedules", schedules_path %></li>
+          <% if !user_signed_in? %>
+            <li <%= 'class=active' if current_page?(new_user_session_path) %> ><%= link_to "Sign In", new_user_session_path  %></li>
+            <li <%= 'class=active' if current_page?(new_user_registration_path) %> ><%= link_to "Sign Up", new_user_registration_path  %></li>
+          <% else %>
+            <li><%= link_to "Sign Out", destroy_user_session_path, :method => "DELETE"  %></li>
+          <% end %>
+        </ul>
+        <% if !user_signed_in? %>
+          <%= form_for :user, :method => "post", :url => user_session_path, :html => { :class => "navbar-form navbar-right" }  do |f| %>
+            <div class="form-group">
+              <%= f.email_field :email, :autofocus => true, :placeholder => "Email", :class => "form-control" %>
+            </div>
+            <div class="form-group">
+              <%= f.password_field :password, :placeholder => "Password", :class => "form-control" %>
+            </div>
+            <%= f.submit "Sign in", :class => "btn bt-default" %>
+          <% end %>
+        <% end %>
+      </div><!--/.nav-collapse -->
+    </nav>
 
     <div class="container">
         <div class="row">
-          <div class="span9">
+          <div class="col-md-9">
             <%= bootstrap_flash %>
             <%= yield %>
           </div>
-          <div class="span3">
-            <div class="well sidebar-nav">
-              <h3>Sidebar</h3>
-              <ul class="nav nav-list">
-                <li class="nav-header">Account stuff here</li>
-                <li><%= link_to "Link1", "/path1"  %></li>
-                <li><%= link_to "Link2", "/path2"  %></li>
-                <li><%= link_to "Link3", "/path3"  %></li>
+          <div class="col-md-3">
+            <div class="well">
+              <ul class="nav list-unstyled">
+                <li class="nav-header">Directory</li>
+                <li <%= 'class=active' if params[:controller]=="course" %> ><%= link_to "Courses", courses_path %></li>
+                <li <%= 'class=active' if params[:controller]=="schedules" %> ><%= link_to "Schedules", schedules_path %></li>
+                <% if !user_signed_in? %>
+                  <li <%= 'class=active' if current_page?(new_user_session_path) %> ><%= link_to "Sign In", new_user_session_path  %></li>
+                  <li <%= 'class=active' if current_page?(new_user_registration_path) %> ><%= link_to "Sign Up", new_user_registration_path  %></li>
+                <% else %>
+                  <li><%= link_to "Sign Out", destroy_user_session_path, :method => "DELETE"  %></li>
+                <% end %>
               </ul>
             </div><!--/.well -->
           </div><!--/span-->

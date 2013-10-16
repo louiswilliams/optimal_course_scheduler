@@ -1,0 +1,57 @@
+<% if (params[:action]=="new") %>
+  <% url = schedule_time_constraint_index_path(params[:schedule_id]) %>
+<% elsif (params[:action]=="edit") %>
+  <% url = schedule_time_constraint_path(params[:schedule_id],@constraint) %>
+<% end %>
+<%= form_for @constraint, :url => url do |f| %>
+<div class="row">
+  <div class="col-md-1">
+    <h5>Name</h5>
+  </div>
+  <div class="col-md-3">
+    <%= f.text_field :name, :class => "form-control" %>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-1">
+    <h5>Days</h5>
+  </div>
+  <div class="col-md-4">
+    <div class="row">
+      <div class="col-md-1"><%= f.check_box :monday %></div>
+      <div class="col-md-1"><%= f.check_box :tuesday %></div>
+      <div class="col-md-1"><%= f.check_box :wednesday %></div>
+      <div class="col-md-1"><%= f.check_box :thursday %></div>
+      <div class="col-md-1"><%= f.check_box :friday %></div>
+    </div>
+    <div class="row">
+      <div class="col-md-1">M</div>
+      <div class="col-md-1">T</div>
+      <div class="col-md-1">W</div>
+      <div class="col-md-1">R</div>
+      <div class="col-md-1">F</div>
+    </div>
+  </div>
+</div>
+<div class="row" style="margin-top: 8px">
+  <div class="col-md-1" style="white-space: nowrap">
+    <h5>Start time</h5>
+  </div>
+  <div class="col-md-3">
+    <%= f.time_field :start_time, :class => "form-control" %>
+  </div>
+</div>
+<div class="row" style="margin-top: 8px">
+  <div class="col-md-1" style="white-space: nowrap">
+    <h5>End time</h5>
+  </div>
+  <div class="col-md-3">
+    <%= f.time_field :end_time, :class => "form-control"  %>
+  </div>
+</div>
+<div class="row" style="margin-top: 8px">
+  <div class="col-md-3">
+    <%= f.submit "Add constraint", :class => "btn btn-success" %>
+  </div>
+</div>
+<% end %>
