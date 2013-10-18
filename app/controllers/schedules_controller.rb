@@ -1,5 +1,5 @@
 class SchedulesController < ApplicationController
-  before_action :set_schedule, only: [:show, :edit, :update, :destroy]
+  before_action :set_schedule, only: [:show, :edit, :update, :destroy, :do_schedule]
   before_action :authenticate_user!
 
   # GET /schedules
@@ -65,6 +65,11 @@ class SchedulesController < ApplicationController
     end
   end
 
+  def do_schedule
+    @scheduler = Scheduler.new(@schedule)
+    @scheduler.run
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_schedule
@@ -75,4 +80,5 @@ class SchedulesController < ApplicationController
     def schedule_params
       params.require(:schedule).permit( :name, :year, :semester)
     end
+
 end

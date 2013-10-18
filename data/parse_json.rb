@@ -39,12 +39,12 @@ weekdays = {"M" => "monday","T" => "tuesday","W" => "wednesday","R" => "thursday
 db = SQLite3::Database.open("/var/www/rails/optimal_course_scheduler/db/development.sqlite3")
 
 # Add courses
-#puts "Adding courses"
-#courses.each do |course|
-#  db.execute("insert into courses (name,credits,college,title) values(?,?,?,?)",
-#    course["id"],course["credit"],course["college"],course["title"])
-#  puts course
-#end
+puts "Adding courses"
+courses.each do |course|
+  db.execute("insert into courses (name,credits,college,title) values(?,?,?,?)",
+    course["id"],course["credit"],course["college"],course["title"])
+  puts course
+end
 
 puts "Adding sections"
 sections.each do |section|

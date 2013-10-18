@@ -3,6 +3,9 @@ OptimalCourseScheduler::Application.routes.draw do
   resources :schedules do 
     resources :schedule_course
     resources :time_constraint
+    member do
+      get "do_schedule"
+    end
   end
 
   devise_for :users

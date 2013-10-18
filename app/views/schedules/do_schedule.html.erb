@@ -1,0 +1,6 @@
+<% Scheduler.days.each do |day|%>
+	<h2><%= Scheduler.day_to_str day%></h2>
+	<% @scheduler.week[day].each do |time| %>
+	  <%= Scheduler.round_time(time[0]).strftime("%l:%M %P") %> <%= time[1] %><br>
+	<% end %>
+<% end %>
