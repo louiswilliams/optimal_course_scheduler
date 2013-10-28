@@ -38,24 +38,33 @@ weekdays = {"M" => "monday","T" => "tuesday","W" => "wednesday","R" => "thursday
 # devtest.db is just a copy of my dev "db/development.sqlite3".
 db = SQLite3::Database.open("/var/www/rails/optimal_course_scheduler/db/development.sqlite3")
 
+schools_tmp = db.execute("select id,name from schools")
+schools = Hash.new
+schools_tmp.each do |school|
+  schools[school[1]] = school[0]
+end
+
 # Add courses
+
 puts "Adding courses"
 courses.each do |course|
-  db.execute("insert into courses (name,credits,college,title) values(?,?,?,?)",
-    course["id"],course["credit"],course["college"],course["title"])
+  db.execute("insert into courses (name,credits,school_id,title) values(?,?,?,?)",
+    course["id"],course["credit"],schools[course["school"]],course["title"])
   puts course
 end
 
 puts "Adding sections"
 sections.each do |section|
-  course_id = db.execute("select id from courses where name=? AND college=?",
+  course_id = db.execute("select id from courses where name=? AND school_id=?",
     section["course_id"],
-    section["college"])[0][0]
+    schools[section["school"]])[0][0]
+  puts course_id
+
   db.execute("insert into sections (name,course_id) values(?,?)",section["id"],course_id)
-  puts section["college"] + " " + section["course_id"] + " - " + section["id"] + ". COURSE.id: #{course_id}" 
+  puts section["school"] + " " + section["course_id"] + " - " + section["id"] + ". COURSE.id: #{course_id}" 
 
   puts "---Meetings---"
-  # Now for the section's meetings
+  # Now for the sectiown's meetings
   section["meetings"].each do |meeting|
     # If a day of week is found in meeting "days" array, then set the coulmn
     # value to true, otherwise, false.
