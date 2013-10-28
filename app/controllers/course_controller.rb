@@ -1,30 +1,30 @@
 class CourseController < ApplicationController
+  include ApplicationHelper
   before_filter :add_course_path
 
   def index
     @colleges = Course.colleges
   end
-  def college
 
-    @courses = []
-    if Course.colleges[params[:college]]
-      @courses = Course.where("college = ?",params[:college])
-    end
-    respond_to do |format|
-      format.html
-      format.json { render json: @courses}
-    end
-  end
   def show
-
-    @course = Course.find(params[:id])
+    if params[:id]
+      @course = Course.find(params[:id])
+      @school = School.find(@course.school_id)
+    else
+      @school = School.find_by name: params[:school_name]
+      @course = Course.find_by name: params[:name], school_id: @school.id
+    end
     @sections = Section.where("course_id = ?",@course.id)
     @course.sections = @sections
+
     respond_to do |format|
       format.html
-      format.json { render json: @course}
+      course = @course.as_json
+      course["sections"] = @sections.as_json
+      format.json { render json: course}
     end
   end
+
   def create
     query = ""
     if params[:college]
@@ -33,10 +33,4 @@ class CourseController < ApplicationController
     @courses = Course.where(query)
   end
 
-  def add_course_path
-    @add_course_path = "/"
-    if user_signed_in?
-      @add_course_path = schedule_schedule_course_index_path(Schedule.where("user_id = ?",current_user.id).first.id)
-    end
-  end
 end

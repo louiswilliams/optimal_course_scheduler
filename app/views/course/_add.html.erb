@@ -1,0 +1,8 @@
+<%= form_tag add_course_path, :class=> "add_course" do %>
+  <%= hidden_field_tag :id, course.id %>
+  <% if is_in_schedule? course%>
+    <%= submit_tag "Scheduled", :class => "btn btn-success", :disabled => "true" %>
+  <% else %>
+      <%= submit_tag "Add course", :class => "btn btn-success" %>
+  <% end %>
+<% end %>

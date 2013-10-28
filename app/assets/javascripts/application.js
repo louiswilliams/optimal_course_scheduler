@@ -15,3 +15,17 @@
 //=  require twitter/bootstrap
 //= require turbolinks
 //= require_tree .
+
+$(document).ready(function() {
+	$(".add_course").submit(function(event) {
+		event.preventDefault();
+		
+		var data = $(this).serialize();
+		var url = $(this).attr("action");
+		var $submit = $(this).children("input[type=submit]")
+
+		$.post(url, data, function(){
+			$submit.val("Scheduled").attr("disabled",true);
+		});
+	});
+});

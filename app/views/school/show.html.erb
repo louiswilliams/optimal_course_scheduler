@@ -1,0 +1,26 @@
+<h5><%= link_to "Back to schools",root_path %></h5>
+<h1><%= @school.name %> Courses</h1>
+<% if @courses.count < 1 %>
+  <h3>No courses found (or bad query)</h3>
+<% end %>
+<% @courses.each do |course| %>
+  <% sections = Section.where("course_id = ?",course.id) %>
+<div class="well col-md-9">
+  <div class="row">
+    <div class="col-md-3">
+      <h3><%= link_to "#{course.college} #{course.name}","/school/#{@school.name}/#{course.name}" %></h3>
+    </div>
+    <div class="col-md-5" style="padding-top: 15px;"><p>
+      <strong><%= course.title %></strong><br>
+      <span class="text-success"><%= course.credits %> Credit hours</span><br>
+      <span class="text-info"><%= sections.count %> Sections</span>
+    </p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-1">
+      <%= render :partial => "course/add", :locals => {:course => course} %> 
+    </div>
+  </div>
+</div>
+<% end %>

@@ -1,0 +1,103 @@
+require 'sqlite3'
+
+schools = 
+    {
+    'ACCT' => 'Accounting',
+	'AERO' => 'Aerospace Engineering',
+	'AE' => 'Aerospace Engineering',
+	'APPH' => 'Applied Physiology',
+	'ARBC' => 'Arabic',
+	'ARCH' => 'Architecture',
+	'AS' => 'Air Force Aerospace Studies',
+	'ASE' => 'Applied Systems Engineering',
+	'BIOL' => 'Biology',
+	'BC' => 'Building Construction',
+	'BMED' => 'Biomedical Engineering',
+	'BMEJ' => 'Biomed Engr/Joint Emory PKU',
+	'BMEM' => 'Biomedical Engr/Joint Emory',
+	'CETL' => 'Center Enhancement-Teach/Learn',
+	'CHBE' => 'Chemical & Biomolecular Engr',
+	'CHEM' => 'Chemistry',
+	'CEE' => 'Civil and Environmental Engr',
+	'CHIN' => 'Chinese',
+	'COA' => 'College of Architecture',
+	'COE' => 'College of Engineering',
+	'CSE' => 'Computational Science & Engr',
+	'COOP' => 'Cooperative Work Assignment',
+	'CP' => 'City Planning',
+	'CS' => 'Computer Science',
+	'CX' => 'Computational Mod, Sim, & Data',
+	'DOPP' => 'Professional Practice',
+	'EAS' => 'Earth and Atmospheric Sciences',
+	'ECON' => 'Economics',
+	'ECE' => 'Electrical & Computer Engr',
+	'ENGL' => 'English',
+	'ENTR' => 'Enterprise Transformation',
+	'FREN' => 'French',
+	'FS' => 'Foreign Studies',
+	'GT' => 'Georgia Tech',
+	'GTL' => 'Georgia Tech Lorraine',
+	'GRMN' => 'German',
+	'HPS' => 'Health Performance Science',
+	'HP' => 'Health Physics',
+	'HS' => 'Health Systems',
+	'HIN' => 'Hindi',
+	'HIST' => 'History',
+	'HTS' => 'History, Technology & Society',
+	'ID' => 'Industrial Design',
+	'IL' => 'International Logistics',
+	'IMBA' => 'Intl Executive MBA',
+	'INTA' => 'International Affairs',
+	'INTN' => 'Internship',
+	'IPCO' => 'Int\'l Plan Co-op Abroad',
+	'IPIN' => 'Int\'l Plan Intern Abroad',
+	'IPFS' => 'Int\'l Plan-Exchange Program',
+	'IPSA' => 'Int\'l Plan-Study Abroad',
+	'ISYE' => 'Industrial & Systems Engr',
+	'JAPN' => 'Japanese',
+	'KOR' => 'Korean',
+	'LATN' => 'Latin',
+	'LCC' => 'Lit, Communication & Culture',
+	'LING' => 'Linguistics',
+	'LS' => 'Learning Support',
+	'MGT' => 'Management',
+	'MOT' => 'Management of Technology',
+	'MSE' => 'Materials Science & Engr',
+	'MATH' => 'Mathematics',
+	'ME' => 'Mechanical Engineering',
+	'ML' => 'Modern Languages',
+	'MP' => 'Medical Physics',
+	'MSL' => 'Military Science & Leadership',
+	'MUSI' => 'Music',
+	'NRE' => 'Nuclear & Radiological Engr',
+	'NS' => 'Naval Science',
+	'PERS' => 'Persian',
+	'PHIL' => 'Philosophy',
+	'PHYS' => 'Physics',
+	'POL' => 'Political Science',
+	'PSYC' => 'Psychology',
+	'PSY' => 'Psychology',
+	'PTFE' => 'Polymer, Textile and Fiber Eng',
+	'PUBP' => 'Public Policy',
+	'PUBJ' => 'Public Policy/Joint GSU PhD',
+	'RGTE' => 'Regent\' Writing Skills',
+	'RGTR' => 'Regents\' Reading Skills',
+	'RUSS' => 'Russian',
+	'SCI' => 'Science',
+	'SOC' => 'Sociology',
+	'SPAN' => 'Spanish',
+	'UCGA' => 'Cross Enrollment'
+	}
+
+db = SQLite3::Database.open("/var/www/rails/optimal_course_scheduler/db/development.sqlite3")
+
+# schools.each do |school|
+# 	puts "#{school[0]}: #{school[1]}"
+# 	db.execute("insert into schools (name,title) Values (?,?)",school[0],school[1])
+# end
+
+db.execute("select * from courses") do |row|
+	school_id = db.execute("Select id from schools where name=?",row[2])[0][0]
+	puts "#{row[0]}: #{school_id}"
+	db.execute("update courses set school_id=? where id=?",school_id,row[0])
+end

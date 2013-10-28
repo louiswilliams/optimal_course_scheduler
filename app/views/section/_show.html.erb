@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-md-2">
-    <h3><%= link_to "#{@section.name}",course_section_path(@course.id,@section.id) %></h3>
+    <h3><%= link_to "#{@section.name}","/school/#{@school.name}/#{@course.name}/#{@section.name}" %></h3>
   </div>
   <div class="col-md-6">
     <% meetings = Meeting.where("section_id = ?",@section.id) %>

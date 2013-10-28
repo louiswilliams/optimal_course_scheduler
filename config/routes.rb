@@ -1,5 +1,11 @@
 OptimalCourseScheduler::Application.routes.draw do
 
+  get "schools(.:format)" => "school#index"
+  get "school(.:format)" => "school#index"
+  get "school/:name(.:format)" => "school#show"
+  get "school/:school_name/:name(.:format)" => "course#show"
+  get "school/:school_name/:course_name/:name(.:format)" => "section#show"
+
   resources :schedules do 
     resources :schedule_course
     resources :time_constraint
@@ -16,17 +22,16 @@ OptimalCourseScheduler::Application.routes.draw do
   get "main/about"
   get "main/test"
 
-  get "course/college/:college" => "course#college"
-  resources :course do
-    resources :section do
-      resources :meeting
-    end
-  end
+  resources :course
+  resources :section
+  resources :meeting
+
+  root 'school#index'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  root 'main#index'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

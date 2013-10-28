@@ -50,7 +50,7 @@
       <a class="navbar-brand" href="/">Optimal Course Scheduler</a>
       <div class="collapse navbar-collapse navbar-ex1-collapse">
         <ul class="nav navbar-nav">
-          <li <%= 'class=active' if params[:controller]=="course" %> ><%= link_to "Courses", courses_path %></li>
+          <li <%= 'class=active' if params[:controller]=="course" %> ><%= link_to "Courses", root_path %></li>
           <li <%= 'class=active' if params[:controller]=="schedules" %> ><%= link_to "Schedules", schedules_path %></li>
           <% if !user_signed_in? %>
             <li <%= 'class=active' if current_page?(new_user_session_path) %> ><%= link_to "Sign In", new_user_session_path  %></li>
@@ -79,28 +79,13 @@
             <%= bootstrap_flash %>
             <%= yield %>
           </div>
-          <div class="col-md-3">
-            <div class="well">
-              <ul class="nav list-unstyled">
-                <li class="nav-header">Directory</li>
-                <li <%= 'class=active' if params[:controller]=="course" %> ><%= link_to "Courses", courses_path %></li>
-                <li <%= 'class=active' if params[:controller]=="schedules" %> ><%= link_to "Schedules", schedules_path %></li>
-                <% if !user_signed_in? %>
-                  <li <%= 'class=active' if current_page?(new_user_session_path) %> ><%= link_to "Sign In", new_user_session_path  %></li>
-                  <li <%= 'class=active' if current_page?(new_user_registration_path) %> ><%= link_to "Sign Up", new_user_registration_path  %></li>
-                <% else %>
-                  <li><%= link_to "Sign Out", destroy_user_session_path, :method => "DELETE"  %></li>
-                <% end %>
-              </ul>
-            </div><!--/.well -->
-          </div><!--/span-->
-        </div><!--/row-->
+        </div>
 
       <footer>
         <p>&copy; Louis Williams 2013</p>
       </footer>
 
-    </div> <!-- /container -->
+    </div>
 
   </body>
 </html>
