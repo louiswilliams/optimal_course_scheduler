@@ -15,10 +15,17 @@ Hierarchy of models: Schools > Courses > Sections > Meetings
 
 To retrieve JSON data about a school, course, section, or meeting, create a query in one of the following format (Parentheses indicate optional values):
 
-`/school(s).json` All schools
-`/school/[SCHOOL_NAME].json` Courses from this school
-`/school/[SCHOOL_NAME]/[COURSE_NAME].json` Sections from this course
-`/school/[SCHOOL_NAME]/[COURSE_NAME]/[SECTION_NAME].json` Meetings from this section
+All schools:
+`/school(s).json` 
+
+Courses from this school:
+`/school/[SCHOOL_NAME].json`
+
+Sections from this course:
+`/school/[SCHOOL_NAME]/[COURSE_NAME].json`
+
+Meetings from this section:
+`/school/[SCHOOL_NAME]/[COURSE_NAME]/[SECTION_NAME].json` 
 
 [SCHOOL_NAME]: The school code (CS,PHYS,APPH, etc.)
 [COURSE_NAME]: The course code (1100,1501,4001, etc. )
