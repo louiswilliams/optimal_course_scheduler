@@ -2,14 +2,14 @@ class SectionController < ApplicationController
   def show
   	if params[:id]
       @section = Section.find params[:id]
-      @course = Course.find @section.course_id
-      @school = School.find @course.school_id
+      @course = @section.course
+      @school = @section.school
   	else
   	  @school = School.find_by name: params[:school_name]
   	  @course = Course.find_by name: params[:course_name], school_id: @school.id
       @section = Section.find_by name: params[:name], course_id: @course.id
     end
-    @meetings = Meeting.where("section_id = ? AND course_id = ?",@section.id,@course.id)
+    @meetings = @section.meetings
 
     respond_to do |format|
       format.html

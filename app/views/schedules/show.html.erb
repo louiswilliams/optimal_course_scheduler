@@ -33,7 +33,7 @@
 <% @schedule_courses.each do |schedule_course| %>
   <div class="row">
     <div class="col-md-5"><h4>
-      <%= link_to "#{schedule_course.course.college} #{schedule_course.course.name}", course_path(schedule_course.course) %>&nbsp;
+      <%= link_to "#{schedule_course.course.school.name} #{schedule_course.course.name}", course_path(schedule_course.course) %>&nbsp;
       <%= schedule_course.course.title %></h4>
     </div>
     <div class="col-md-1" style="margin-top: 7px">

@@ -1,7 +1,7 @@
-<h5><%= link_to "Back to course list", "/school/#{@school.name}" %></h5>
+<h5><%= link_to "Back to course list", "/school/#{@school.name}", :class => "" %></h5>
 <div class="row">
   <div class="col-md-3">
-    <h1><%= link_to "#{@course.college} #{@course.name}","/school/#{@school.name}/#{@course.name}" %></h1>
+    <h1><%= link_to "#{@course.school.name} #{@course.name}","/school/#{@school.name}/#{@course.name}" %></h1>
   </div>
   <div class="col-md-5" style="margin-top: 15px;"><p>
     <strong><%= @course.title %></strong><br>

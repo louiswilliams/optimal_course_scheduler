@@ -9,7 +9,7 @@ class SchoolController < ApplicationController
 
   def show
   	@school = School.find_by name: params[:name]
-  	@courses = Course.where("school_id = ?", @school.id)
+  	@courses = @school.courses
   	respond_to do |format|
   		format.html
   		format.json { render json: @courses }

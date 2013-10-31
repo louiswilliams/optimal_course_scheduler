@@ -3,7 +3,7 @@ class CourseController < ApplicationController
   before_filter :add_course_path
 
   def index
-    @colleges = Course.colleges
+    redirect_to root_path
   end
 
   def show
@@ -14,8 +14,7 @@ class CourseController < ApplicationController
       @school = School.find_by name: params[:school_name]
       @course = Course.find_by name: params[:name], school_id: @school.id
     end
-    @sections = Section.where("course_id = ?",@course.id)
-    @course.sections = @sections
+    @sections = @course.sections
 
     respond_to do |format|
       format.html

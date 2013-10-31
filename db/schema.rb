@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131025154030) do
+ActiveRecord::Schema.define(version: 20131029000216) do
 
   create_table "courses", force: true do |t|
     t.string   "name"
@@ -50,6 +50,7 @@ ActiveRecord::Schema.define(version: 20131025154030) do
     t.boolean  "scheduled"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "school_id"
   end
 
   add_index "schedule_courses", ["course_id"], name: "index_schedule_courses_on_course_id"

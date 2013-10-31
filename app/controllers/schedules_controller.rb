@@ -5,14 +5,14 @@ class SchedulesController < ApplicationController
   # GET /schedules
   # GET /schedules.json
   def index
-    @schedules = Schedule.where("user_id = ?",current_user.id)
+    @schedules = current_user.schedules
   end
 
   # GET /schedules/1
   # GET /schedules/1.json
   def show
-    @schedule_courses = ScheduleCourse.where("schedule_id = ?",@schedule.id)
-    @time_constraints = TimeConstraint.where("schedule_id = ?",@schedule.id)
+    @schedule_courses = @schedule.schedule_courses
+    @time_constraints = @schedule.time_constraints
   end
 
   # GET /schedules/new
@@ -67,7 +67,7 @@ class SchedulesController < ApplicationController
 
   def do_schedule
     @scheduler = Scheduler.new(@schedule)
-    @scheduler.run
+    @status = @scheduler.run
   end
 
   private

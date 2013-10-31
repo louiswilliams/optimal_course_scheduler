@@ -16,9 +16,11 @@
       <span class="text-info"><%= sections.count %> Sections</span>
     </p>
     </div>
+    <% if sections.count > 0 %>
     <div class="col-md-1" style="padding-top: 20px">
       <%= render :partial => "course/add", :locals => {:course => course} %> 
     </div>
+    <% end %>
   </div>
 </div>
 <% end %>
