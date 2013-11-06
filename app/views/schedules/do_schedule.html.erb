@@ -1,15 +1,26 @@
-<%= @status %>
+<%= (@status) ? "Scheduled" : "Couldn't schedule course" %>
 
 <div class="row">
 <% Scheduler.days.each do |day|%>
 	<div class="col-md-2">
+	<table>
 	<h2><%= Scheduler.day_to_str day, true%></h2>
 	<% @scheduler.week[day].each do |(time,slot)| %>
+	<tr>
+	  <td>
 	  <%= Scheduler.float_time_to_time(time).strftime("%l:%M %P") %>
-	  <% if slot!=false %>
+	  </td>
+	  <td>
+	  <% if slot.is_a? Meeting %>
 	    <% meeting = Meeting.find(slot) %>
 	    <%= "#{meeting.section.course.name} - #{meeting.section.name}"  %>
-	  <% end %><br>
+	  <% elsif slot.is_a? TimeConstraint %>
+		<% time_constraint = TimeConstraint.find(slot) %>
+	    <%= "#{time_constraint.name}"  %>
+	  <% end %>
+	  </td>
+	</tr>
 	<% end %>
+	</table>
 	</div>
 <% end %>

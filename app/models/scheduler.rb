@@ -3,18 +3,52 @@ class Scheduler
 
 	def initialize schedule
 		@schedule = schedule
-		@courses = []
-		@schedule.schedule_courses.each do |sc|
-			@courses << ScheduledCourse.new(sc.course,self)
-		end
-		
+		tmp_courses = Array.new
+		@courses = Array.new
 		@week = Scheduler.week
+		
+		@schedule.schedule_courses.each do |sc|
+			tmp_courses << sc.course
+		end
+
+		tmp_courses.sort! { |a,b| a.sections.count <=> b.sections.count }
+        tmp_courses.each do |course|
+            @courses << ScheduledCourse.new(course,self)
+        end
+
+		week_iterate { |day,time,slot|
+			@schedule.time_constraints.each do |tc|
+				days_str = tc.days_to_str
+
+				class_time = Scheduler.time_to_float Scheduler.round_time(tc.start_time)
+				on_this_day = (days_str.include?(Scheduler.day_to_str(day))) ? true : false
+
+				if class_time==time && on_this_day
+					current_time = class_time
+
+					while current_time < Scheduler.time_to_float(tc.end_time)
+						@week[day][current_time] = tc
+						current_time += 0.5
+					end
+				end
+			end
+		}
+	end
+
+	def week_iterate
+		Scheduler.days.each do |day|
+			@week[day].each do |(time,slot)|
+				yield day,time,slot
+			end
+		end
 	end
 
 	def run
 		index = 0
 		while index < @courses.count 
+            Rails.logger.info "INDEX: #{index}"
 			if @courses[index].schedule
+                Rails.logger.info "Course scheduled: true"
 				index += 1
 				if index==@courses.count
 					return true
@@ -22,12 +56,15 @@ class Scheduler
 			elsif index == 0
 				return false
 			else
-				@courses[index].revert
-				index -= 1
-				@courses[index].next
+				if @courses[index].has_next
+					@courses[index].revert
+					index -= 1
+					@courses[index].next
+				else
+					return false
+				end
 			end
 		end
-
 	end
 
 	class << self
@@ -98,119 +135,128 @@ class Scheduler
 			end
 		end
 	end
-end
 
-class ScheduledCourse
-	attr_reader :course, :sections
+	class ScheduledCourse
+		attr_reader :course, :sections
 
-	def initialize course, scheduler
-		@course = course
-		@sections = []
-		@course.sections.each do |section|
-			@sections << ScheduledSection.new(section, scheduler)
+		def initialize course, scheduler
+			@course = course
+			@sections = []
+			@course.sections.each do |section|
+				@sections << ScheduledSection.new(section, scheduler)
+			end
+			@section_index = 0
 		end
-		@section_index = 0
+
+		def schedule
+	        Rails.logger.info "#{@course.id}"
+			scheduled = false
+			while ( !scheduled && @section_index < @sections.count )
+				scheduled = @sections[@section_index].schedule
+				if !scheduled
+					@section_index += 1
+				end
+			end
+			return scheduled
+		end
+
+		def next
+			@section_index += 1
+		end
+
+		def has_next
+			return @section_index+1 < @sections.count
+		end
+
+		def pred
+			@section_index -= 1
+		end
+
+		def revert
+			@sections[@section_index].revert
+		end
 	end
 
-	def schedule
-		scheduled = false
-		while ( !scheduled && @section_index < @sections.count )
-			scheduled = @sections[@section_index].schedule
-			if !scheduled
-				@section_index += 1
+	class ScheduledSection
+		attr_reader :section, :meetings
+
+		def initialize section, scheduler
+			@section = section
+			@meetings = []
+			@section.meetings.each do |meeting|
+				@meetings << ScheduledMeeting.new(meeting, scheduler)
+			end
+
+		end
+
+		def schedule
+			schedulable = true
+			index = 0 
+			while schedulable && index < @meetings.count 
+				if !@meetings[index].schedule
+					schedulable = false
+				end
+				index += 1
+			end
+	        Rails.logger.info "Section scheduled: #{schedulable}"
+	        if !schedulable
+	            revert
+	        end
+			return schedulable
+		end
+
+		def revert
+		    Rails.logger.info "Reverting section #{@section.name}"
+			@meetings.each do |meeting|
+				meeting.revert
 			end
 		end
-		return scheduled
 	end
 
-	def next
-		@section_index += 1
-	end
+	class ScheduledMeeting
+		attr_reader :meeting
 
-	def pred
-		@section_index -= 1
-	end
-
-	def revert
-		Rails.logger.info "#{@section_index}, #{@sections[@section_index]}"
-		# @sections[@section_index].revert
-	end
-end
-
-class ScheduledSection
-	attr_reader :section, :meetings
-
-	def initialize section, scheduler
-		@section = section
-		@meetings = []
-		@section.meetings.each do |meeting|
-			@meetings << ScheduledMeeting.new(meeting, scheduler)
+		def initialize meeting, scheduler
+			@meeting = meeting
+			@scheduler = scheduler
+			@holds = Array.new
 		end
+		def schedule
+			schedulable = true
 
-	end
-
-	def schedule
-		schedulable = true
-		index = 0 
-		while schedulable && index < @meetings.count 
-			if !@meetings[index].schedule
-				schedulable = false
-			end
-			index += 1
-		end
-		return schedulable
-	end
-
-	def revert
-		@meetings.each do |meeting|
-			meeting.revert
-		end
-	end
-end
-
-class ScheduledMeeting
-	attr_reader :meeting
-
-	def initialize meeting, scheduler
-		@meeting = meeting
-		@scheduler = scheduler
-		@holds = Array.new
-	end
-	def schedule
-		schedulable = true
-
-		Scheduler.days.each do |day|
-			days_str = @meeting.days_to_str
-
-			@scheduler.week[day].each do |(time,slot)|
+			@scheduler.week_iterate do |day,time,slot|
+				days_str = @meeting.days_to_str
 
 				class_time = Scheduler.time_to_float Scheduler.round_time(@meeting.start_time)
 				on_this_day = (days_str.include?(Scheduler.day_to_str(day))) ? true : false
 
 				if class_time==time && on_this_day
 					current_time = class_time
-					Rails.logger.info "#{day}, #{class_time}, #{time}, #{@meeting.section.course.name}"				
+					Rails.logger.info "#{day}, #{class_time}, #{@meeting.section.course.name}, #{@meeting.section.name}"				
 
 					while schedulable && current_time <= Scheduler.time_to_float(@meeting.end_time)
 						if @scheduler.week[day][current_time] != false
 							schedulable = false
 						else
-							@holds << {:day => day, :time => time, :meeting =>  @meeting }
+                            hold = {:day => day, :time => current_time, :meeting =>  @meeting }
+                            @holds << hold
+                            Rails.logger.info "Holding: #{day}, #{current_time}"
 							@scheduler.week[day][current_time] = @meeting
 							current_time += 0.5
 						end
 					end
 				end
 			end
+
+	        Rails.logger.info "Meeting scheduled: #{schedulable}"
+			return schedulable
 		end
-		return schedulable
+		
+		def revert
+			@holds.each do |hold|
+	            Rails.logger.info "Revering hold #{hold[:day]}, #{hold[:time]}"
+				@scheduler.week[hold[:day]][hold[:time]] = false
+			end
+		end
 	end
-	
-	def revert
-		@holds.each do |hold|
-			@scheduler.week[hold[:day]][hold[:time]] = false
-		end 
-	end
-
-
 end
