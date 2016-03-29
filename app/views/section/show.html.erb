@@ -11,7 +11,7 @@
 </div>
 
 <div class="well">
-  <h3>Section <%= @section.name %></h3>
+  <h3>Section <%= @section.name %> - <%= @section.crn %></h3>
   <% @meetings.each do |meeting| %>
     <% @meeting = meeting %>
     <%= render partial: "meeting/show", object: @meeting %>

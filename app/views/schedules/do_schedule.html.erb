@@ -13,7 +13,7 @@
 	  <td>
 	  <% if slot.is_a? Meeting %>
 	    <% meeting = Meeting.find(slot) %>
-	    <%= "#{meeting.section.course.name} - #{meeting.section.name}"  %>
+	    <%= "#{meeting.section.course.school.name} #{meeting.section.course.name} - #{meeting.section.name} - #{meeting.section.crn}"  %>
 	  <% elsif slot.is_a? TimeConstraint %>
 		<% time_constraint = TimeConstraint.find(slot) %>
 	    <%= "#{time_constraint.name}"  %>
